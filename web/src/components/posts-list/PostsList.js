@@ -6,20 +6,12 @@ import { useQuery } from "react-query";
 
 function PostsList() {
   const fetchPosts = async () => {
-    // const response = await fetch("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    // return response.json();
-    return {
-      posts: [{
-        title: "Text",
-        date: "3/15/2024 10:00AM",
-        text_body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut al"
-      },
-      {
-        title: "Bar",
-        date: "3/17/2024 11:28AM",
-        text_body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi"
-      }]
-    };
+    if (!process.env.REACT_APP_GPTPET_TRACKS_API_URL) {
+      throw new Error("REACT_APP_GPTPET_TRACKS_API_URL is not defined");
+    }
+    console.log('calling ' + process.env.REACT_APP_GPTPET_TRACKS_API_URL + "/posts?limit=10&offset=0")
+    const response = await fetch(process.env.REACT_APP_GPTPET_TRACKS_API_URL + "/posts?limit=10&offset=0");
+    return response.json();
   };
 
   const { data, status } = useQuery("get-posts", fetchPosts);

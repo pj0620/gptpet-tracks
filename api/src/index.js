@@ -2,9 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
+var cors = require('cors')
 
 const app = express();
 const port = 4000;
+
+app.use(cors())
 
 // MongoDB connection details
 const username = 'gptpet'; // Make sure to encode URI components
