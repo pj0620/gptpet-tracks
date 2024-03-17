@@ -11,7 +11,11 @@ function Post(props) {
   const { post } = props;
 
   return (
-    <CardActionArea component="a" href="#" style={{width: "100%"}}>
+    <CardActionArea component="a" href="#" 
+      style={{
+        width: "100%",
+        backgroundColor: post.text == "Geworfenheit" ? 'yellow' : undefined
+      }}>
       <Card sx={{ display: 'flex', width: "100%" }}>
         <CardContent sx={{ flex: 1 }}>
           <Typography variant="subtitle1" color="text.secondary">

@@ -25,7 +25,7 @@ function PostsList() {
   return (<>
     {status === "loading" && <CircularProgress />}
     {status === "error" && <div style={{color: "red"}}>Error</div>}
-    {status === "success" && <>
+    {(status === "success" && !!data.posts?.length) && <>
       <Button
         onClick={() => {refetch()}}
         variant="contained"
@@ -48,6 +48,7 @@ function PostsList() {
         style={{marginTop: "2rem", marginBottom: "2rem"}}
       >Load More</Button>
     </>}
+    {(status === "success" && !data.posts?.length) && <Typography>No posts found</Typography>}
   </>);
 }
 
