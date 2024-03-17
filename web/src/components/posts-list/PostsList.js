@@ -1,25 +1,36 @@
 import { Merge } from "@mui/icons-material";
-import { AppBar, Button, CircularProgress, Grid, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Button, CircularProgress, Grid, IconButton, MenuItem, Select, Toolbar, Typography } from "@mui/material";
 import Post from "components/post/Post";
 import React from 'react';
 import { useQuery } from "react-query";
 
 function PostsList() {
+  const [count, setCount] = React.useState(10);
+
   const fetchPosts = async () => {
     if (!process.env.REACT_APP_GPTPET_TRACKS_API_URL) {
       throw new Error("REACT_APP_GPTPET_TRACKS_API_URL is not defined");
     }
-    console.log('calling ' + process.env.REACT_APP_GPTPET_TRACKS_API_URL + "/posts?limit=10&offset=0")
-    const response = await fetch(process.env.REACT_APP_GPTPET_TRACKS_API_URL + "/posts?limit=10&offset=0");
+    const response = await fetch(process.env.REACT_APP_GPTPET_TRACKS_API_URL + `/posts?limit=${count}&offset=0`);
     return response.json();
   };
 
-  const { data, status } = useQuery("get-posts", fetchPosts);
+  const { data, status, refetch } = useQuery("get-posts", fetchPosts);
+
+  const loadMore = () => {
+    setCount(count + 10);
+    refetch();
+  }
 
   return (<>
     {status === "loading" && <CircularProgress />}
     {status === "error" && <div style={{color: "red"}}>Error</div>}
-    {status === "success" && 
+    {status === "success" && <>
+      <Button
+        onClick={() => {refetch()}}
+        variant="contained"
+        style={{marginBottom: "2rem"}}
+      >Refresh</Button>
       <Grid
         container
         spacing={2}
@@ -31,7 +42,12 @@ function PostsList() {
           <Post post={post} key={index}/>
         </Grid>)}
       </Grid>
-    }
+      <Button
+        onClick={() => {loadMore()}}
+        variant="contained"
+        style={{marginTop: "2rem", marginBottom: "2rem"}}
+      >Load More</Button>
+    </>}
   </>);
 }
 

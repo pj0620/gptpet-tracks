@@ -15,20 +15,20 @@ function Post(props) {
       <Card sx={{ display: 'flex', width: "100%" }}>
         <CardContent sx={{ flex: 1 }}>
           <Typography variant="subtitle1" color="text.secondary">
-            {post.date}
+            {post.date || '(unknown)'}
           </Typography>
           <Typography variant="subtitle1" paragraph>
-            {post.text_body}
+            {post.text}
           </Typography>
+          {
+            post.image && (<CardMedia
+              component="img"
+              sx={{ width: "50%", display: { xs: 'none', sm: 'block' } }}
+              image={post.image}
+              alt={post.imageLabel}
+            />)
+          }
         </CardContent>
-        {
-          post.image && (<CardMedia
-            component="img"
-            sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={post.image}
-            alt={post.imageLabel}
-          />)
-        }
       </Card>
     </CardActionArea>
   );
