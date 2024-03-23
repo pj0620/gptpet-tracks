@@ -14,10 +14,15 @@ function Post(props) {
     <CardActionArea component="a" href="#" 
       style={{
         width: "100%",
-        backgroundColor: post.text == "Geworfenheit" ? 'yellow' : undefined
+        backgroundColor: post.text === "Geworfenheit" ? '#8B8000' : undefined
       }}>
-      <Card sx={{ display: 'flex', width: "100%" }}>
-        <CardContent sx={{ flex: 1 }}>
+      <Card sx={{ display: 'flex', width: "100%" }} 
+        style={{
+          backgroundColor: post.text === "Geworfenheit" ? '#8B8000' : undefined
+        }}>
+        <CardContent sx={{ flex: 1 }} style={{
+          backgroundColor: post.text === "Geworfenheit" ? '#8B8000' : undefined
+        }}>
           <Typography variant="subtitle1" color="text.secondary">
             {post.date || '(unknown)'}
           </Typography>
