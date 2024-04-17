@@ -27,4 +27,4 @@ cd ..
 echo starting web 
 cd web
 pwd
-npm install && npm run start
+npm install && npm run start &
