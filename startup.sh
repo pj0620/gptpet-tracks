@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(dirname "$0")
+cd "$SCRIPT_DIR"
+
 # Start Docker Daemon
 sudo systemctl start docker
 
@@ -11,10 +14,10 @@ do
 done
 echo "Docker is running."
 
-pushd api
+cd api
 docker-compose up -d
 npm run start &
 
-popd
-pushd web
+cd ..
+cd web
 npm run start &
