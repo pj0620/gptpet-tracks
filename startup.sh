@@ -14,7 +14,7 @@ do
 done
 echo "Docker is running."
 
-git pull
+GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git pull
 
 cd api
 echo starting docker images
