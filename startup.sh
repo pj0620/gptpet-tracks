@@ -20,11 +20,11 @@ echo starting docker images
 docker-compose up -d
 
 echo starting api
-npm run install && npm run start &
+npm install && npm run start &
 
 cd ..
 
 echo starting web 
 cd web
 pwd
-npm run install && npm run start
+npm install && npm run start
