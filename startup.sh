@@ -17,6 +17,7 @@ echo "Docker is running."
 GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git pull
 
 cd api
+pwd
 echo starting docker images
 docker-compose up -d
 
@@ -27,4 +28,5 @@ cd ..
 
 echo starting web 
 cd web
+pwd
 npm run start &
