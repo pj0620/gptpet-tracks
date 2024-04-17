@@ -14,10 +14,17 @@ do
 done
 echo "Docker is running."
 
+git pull
+
 cd api
+echo starting docker images
 docker-compose up -d
+
+echo starting api
 npm run start &
 
 cd ..
+
+echo starting web 
 cd web
 npm run start &
