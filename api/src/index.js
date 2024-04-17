@@ -15,7 +15,7 @@ const password = 'gptpet';
 const dbName = 'posts';
 
 // MongoDB URI - Replace <your_mongodb_cluster_url> with your actual MongoDB cluster URL.
-const mongoUri = `mongodb://${username}:${password}@localhost/${dbName}?authSource=admin`;
+const mongoUri = `mongodb://${username}:${password}@0.0.0.0/${dbName}?authSource=admin`;
 
 // // Setup multer for image uploads
 // const storage = multer.memoryStorage();
@@ -89,5 +89,5 @@ connectToMongo();
 // The rest of your Express app goes here
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://0.0.0.0:${port}`);
 });
