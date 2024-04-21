@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from "react-query";
 import MovementButtons from "components/movement-buttons/MovementButtons";
 import SensorView from "components/sensor-view/SensorView";
+import ColorView from "components/color-view/ColorView";
 
 function ManualControls() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,8 +31,6 @@ function ManualControls() {
     }
   }
 
-  
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetch(`${gptpet_url}/proximity-measurements`)
@@ -54,12 +53,29 @@ function ManualControls() {
     return () => clearInterval(intervalId);
   }, []);
 
+  const setColor = async (color) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${gptpet_url}/color`,
+        color
+      )
+      return response.data;
+    } catch (error) {
+      setErrorMessage('error while calling move endpoint: ' + error.message)
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <>
     <div onClick={() => setErrorMessage('')}>
       <Stack direction="row" spacing={2}>
         <MovementButtons doMove={doMove}/>
         <SensorView measurements={measurements}/>
+        <ColorView setColor={setColor}/>
       </Stack>
     </div>
     <h2 style={{color: 'red', background: 'black'}}>{errorMessage}</h2>
