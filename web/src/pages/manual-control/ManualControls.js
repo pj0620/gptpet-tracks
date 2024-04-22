@@ -10,6 +10,10 @@ import CameraView from "components/camera-view/CameraView";
 import DepthCameraView from "components/depth-camera-view/DepthCameraView";
 
 function ManualControls() {
+  const [loadingView, setLoadingView] = useState(false);
+  const [loadingDepthView, setLoadingDepthView] = useState(false);
+  const [loadingMeasurements, setLoadingMeasurements] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [measurements, setMeasurements] = useState({
@@ -49,8 +53,14 @@ function ManualControls() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      if (loadingMeasurements) {
+        return
+      }
+      setLoadingMeasurements(true);
+
       fetch(`${gptpet_url}/proximity-measurements`)
         .then((response) => {
+          setLoadingMeasurements(false);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
@@ -60,6 +70,7 @@ function ManualControls() {
           setMeasurements(data);
         })
         .catch((error) => {
+          setLoadingMeasurements(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
     }, 1000); // Poll every 1000 milliseconds (1 second)
@@ -69,9 +80,15 @@ function ManualControls() {
   }, [gptpet_url]);
 
   useEffect(() => {
+    if (loadingView) {
+      return
+    }
+    setLoadingView(true);
+
     const intervalId = setInterval(() => {
       fetch(`${gptpet_url}/current-view`)
         .then((response) => {
+          setLoadingView(false);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
@@ -82,6 +99,7 @@ function ManualControls() {
           setCameraView(data?.image);
         })
         .catch((error) => {
+          setLoadingView(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
     }, 1000); // Poll every 1000 milliseconds (1 second)
@@ -91,9 +109,15 @@ function ManualControls() {
   }, [gptpet_url]);
 
   useEffect(() => {
+    if (loadingDepthView) {
+      return;
+    }
+    setLoadingDepthView(true);
+
     const intervalId = setInterval(() => {
       fetch(`${gptpet_url}/current-depth-view`)
         .then((response) => {
+          setLoadingDepthView(false);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
@@ -104,6 +128,7 @@ function ManualControls() {
           setDepthCameraView(data?.image);
         })
         .catch((error) => {
+          setLoadingDepthView(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
     }, 1000); // Poll every 1000 milliseconds (1 second)
