@@ -6,6 +6,8 @@ import { useQuery } from "react-query";
 import MovementButtons from "components/movement-buttons/MovementButtons";
 import SensorView from "components/sensor-view/SensorView";
 import ColorView from "components/color-view/ColorView";
+import CameraView from "components/camera-view/CameraView";
+import DepthCameraView from "components/depth-camera-view/DepthCameraView";
 
 function ManualControls() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -16,6 +18,8 @@ function ManualControls() {
     left: 'unknown',
     right: 'unknown',
   });
+  const [cameraView, setCameraView] = useState('');
+  const [depthCameraView, setDepthCameraView] = useState('');
   
   const gptpet_url = process.env.REACT_APP_GPTPET_CLIENT_HOSTNAME;
   const doMove = async (direction) => {
@@ -41,7 +45,6 @@ function ManualControls() {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           setMeasurements(data);
         })
         .catch((error) => {
@@ -51,7 +54,51 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [gptpet_url]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetch(`${gptpet_url}/current-view`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log('data: ' + data?.image);
+          setCameraView(data?.image);
+        })
+        .catch((error) => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }, 1000); // Poll every 1000 milliseconds (1 second)
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [gptpet_url]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetch(`${gptpet_url}/current-depth-view`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log('data: ' + data?.image);
+          setDepthCameraView(data?.image);
+        })
+        .catch((error) => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }, 1000); // Poll every 1000 milliseconds (1 second)
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [gptpet_url]);
 
   const setColor = async (color) => {
     try {
@@ -74,6 +121,8 @@ function ManualControls() {
     <div onClick={() => setErrorMessage('')}>
       <Stack direction="row" spacing={2}>
         <MovementButtons doMove={doMove}/>
+        <CameraView base64Image={cameraView}/>
+        <DepthCameraView base64Image={depthCameraView}/>
         <SensorView measurements={measurements}/>
         <ColorView setColor={setColor}/>
       </Stack>
