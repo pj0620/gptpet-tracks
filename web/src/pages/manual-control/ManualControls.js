@@ -34,6 +34,18 @@ function ManualControls() {
       setIsLoading(false);
     }
   }
+  const doRotate = async (degrees) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${gptpet_url}/rotate/${degrees}`)
+      return response.data;
+    } catch (error) {
+      setErrorMessage('error while calling rotate endpoint: ' + error.message)
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -120,7 +132,7 @@ function ManualControls() {
     <>
     <div onClick={() => setErrorMessage('')}>
       <Stack direction="row" spacing={2}>
-        <MovementButtons doMove={doMove}/>
+        <MovementButtons doMove={doMove} doRotate={doRotate}/>
         <CameraView base64Image={cameraView}/>
         <DepthCameraView base64Image={depthCameraView}/>
         <SensorView measurements={measurements}/>
