@@ -46,10 +46,10 @@ export default function MovementButtons({doMove, doRotate}) {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', '& > :not(style)': { m: 1 } }} marginTop={'2rem'}>
-        <Button variant="contained" color="primary" onClick={() => doRotate(-1 * degrees)}>
+        <Button variant="contained" color="primary" onClick={() => doRotate(degrees)}>
           <RotateLeft />
         </Button>
-        <Button variant="contained" color="primary" onClick={() => doRotate(degrees)}>
+        <Button variant="contained" color="primary" onClick={() => doRotate(-1 * degrees)}>
           <RotateRight />
         </Button>
       </Box>

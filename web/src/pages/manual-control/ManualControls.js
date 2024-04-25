@@ -13,7 +13,6 @@ function ManualControls() {
   const [loadingView, setLoadingView] = useState(false);
   const [loadingDepthView, setLoadingDepthView] = useState(false);
   const [loadingMeasurements, setLoadingMeasurements] = useState(false);
-
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [measurements, setMeasurements] = useState({
@@ -95,7 +94,6 @@ function ManualControls() {
           return response.json();
         })
         .then((data) => {
-          console.log('data: ' + data?.image);
           setCameraView(data?.image);
         })
         .catch((error) => {
