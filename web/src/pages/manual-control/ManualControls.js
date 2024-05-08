@@ -155,9 +155,11 @@ function ManualControls() {
     <>
     <div onClick={() => setErrorMessage('')}>
       <Stack direction="row" spacing={2}>
-        <MovementButtons doMove={doMove} doRotate={doRotate}/>
         <CameraView base64Image={cameraView}/>
         <DepthCameraView base64Image={depthCameraView}/>
+      </Stack>
+      <Stack direction="row" spacing={2} style={{marginTop: '2rem'}}>
+        <MovementButtons doMove={doMove} doRotate={doRotate}/>
         <SensorView measurements={measurements}/>
         <ColorView setColor={setColor}/>
       </Stack>
