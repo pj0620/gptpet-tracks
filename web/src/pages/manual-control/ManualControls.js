@@ -8,10 +8,12 @@ import SensorView from "components/sensor-view/SensorView";
 import ColorView from "components/color-view/ColorView";
 import CameraView from "components/camera-view/CameraView";
 import DepthCameraView from "components/depth-camera-view/DepthCameraView";
+import ImageView from "components/image-view/DepthCameraView";
 
 function ManualControls() {
   const [loadingView, setLoadingView] = useState(false);
   const [loadingDepthView, setLoadingDepthView] = useState(false);
+  const [loadingLabeledView, setLoadingLabeledView] = useState(false);
   const [loadingMeasurements, setLoadingMeasurements] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +25,7 @@ function ManualControls() {
   });
   const [cameraView, setCameraView] = useState('');
   const [depthCameraView, setDepthCameraView] = useState('');
+  const [labeledView, setLabeledCameraView] = useState('');
   
   const gptpet_url = process.env.REACT_APP_GPTPET_CLIENT_HOSTNAME;
   const doMove = async (direction) => {
@@ -122,11 +125,38 @@ function ManualControls() {
           return response.json();
         })
         .then((data) => {
-          console.log('data: ' + data?.image);
           setDepthCameraView(data?.image);
         })
         .catch((error) => {
           setLoadingDepthView(false);
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }, 1000); // Poll every 1000 milliseconds (1 second)
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [gptpet_url]);
+
+  useEffect(() => {
+    if (loadingLabeledView) {
+      return;
+    }
+    setLoadingLabeledView(true);
+
+    const intervalId = setInterval(() => {
+      fetch(`${gptpet_url}/current-labeled-view`)
+        .then((response) => {
+          setLoadingLabeledView(false);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setLabeledCameraView(data?.image);
+        })
+        .catch((error) => {
+          setLoadingLabeledView(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
     }, 1000); // Poll every 1000 milliseconds (1 second)
@@ -155,8 +185,9 @@ function ManualControls() {
     <>
     <div onClick={() => setErrorMessage('')}>
       <Stack direction="row" spacing={2}>
-        <CameraView base64Image={cameraView}/>
-        <DepthCameraView base64Image={depthCameraView}/>
+        <ImageView base64Image={cameraView} title={'Camera View'}/>
+        <ImageView base64Image={depthCameraView} title={'Depth Camera View'}/>
+        <ImageView base64Image={labeledView} title={'Labeled View'}/>
       </Stack>
       <Stack direction="row" spacing={2} style={{marginTop: '2rem'}}>
         <MovementButtons doMove={doMove} doRotate={doRotate}/>
