@@ -18,8 +18,9 @@ function Skills() {
     `,
   };
 
+  const graphql_url = process.env.REACT_APP_WEAVIATE_GRAPHQL_URL;
   const fetchSkills = async () => {
-    const response = await axios.post('http://localhost:5000/v1/graphql', graphqlQuery, {
+    const response = await axios.post(graphql_url, graphqlQuery, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
