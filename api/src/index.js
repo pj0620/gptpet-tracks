@@ -1,5 +1,4 @@
 const express = require('express');
-const multer = require('multer');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 var cors = require('cors')
@@ -16,10 +15,6 @@ const dbName = 'posts';
 
 // MongoDB URI - Replace <your_mongodb_cluster_url> with your actual MongoDB cluster URL.
 const mongoUri = `mongodb://${username}:${password}@0.0.0.0/${dbName}?authSource=admin`;
-
-// // Setup multer for image uploads
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage: storage, limits: { fileSize: 100 * 1024 * 1024 } });
 
 // Use body-parser middleware
 app.use(bodyParser.json({limit: '200mb'}));
@@ -42,6 +37,7 @@ async function connectToMongo() {
 
         // POST /text endpoint to accept text
         app.post('/text', async (req, res) => {
+            console.log('POST /text request')
             const { text } = req.body;
             if (!text) {
                 return res.status(400).send({ message: 'Text is required' });
@@ -53,6 +49,7 @@ async function connectToMongo() {
 
         // POST /image endpoint to accept actual images
         app.post('/image', async (req, res) => {
+            console.log('POST /image request')
             const { image } = req.body;
             if (!image) {
                 return res.status(400).send({ message: 'image is required' });
@@ -64,18 +61,32 @@ async function connectToMongo() {
 
         // GET /posts endpoint to return both image and text data
         app.get('/posts', async (req, res) => {
-          const { offset, limit } = req.query;
+          console.log('GET /posts request');
+          const { offset, limit, search } = req.query;
+        
           if (!isConvertibleToNumber(offset) || !isConvertibleToNumber(limit)) {
-              return res.status(400).send({ message: 'pagination must be numbers' });
+            return res.status(400).send({ message: 'pagination must be numbers' });
           }
-          const posts = await postsCollection.find({})
-              .sort({ date: -1 }) // Sort by creationDate in descending order
+        
+          const query = {};
+          if (search) {
+            query.text = { $regex: search, $options: 'i' }; // Case-insensitive search
+          }
+        
+          try {
+            const posts = await postsCollection.find(query)
+              .sort({ date: -1 }) // Sort by date in descending order
               // @ts-ignore
               .skip(parseInt(offset))
               // @ts-ignore
               .limit(parseInt(limit))
               .toArray();
-          res.status(200).send({ posts });
+        
+            res.status(200).send({ posts });
+          } catch (err) {
+            console.error('Failed to fetch posts', err);
+            res.status(500).send({ message: 'Failed to fetch posts' });
+          }
         });
 
     } catch (err) {

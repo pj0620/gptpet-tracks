@@ -1,0 +1,7 @@
+.MuiInputBase-root {
+  width: 100%;
+}
+
+.MuiInputBase-root > label {
+  width: 100%;
+}
