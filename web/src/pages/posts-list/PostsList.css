@@ -5,3 +5,7 @@
 .MuiInputBase-root > label {
   width: 100%;
 }
+
+.MuiInputBase-root > input {
+  width: 100% !important;
+}

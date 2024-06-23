@@ -1,7 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
-var cors = require('cors')
+import express from 'express';
+import bodyParser from 'body-parser';
+import { MongoClient } from 'mongodb';
+import cors from 'cors';
+import { extractGoalDetails, extractTaskDetails, handlMultiGet } from './utils.js';
+
 
 const app = express();
 const port = 4000;
@@ -20,11 +22,6 @@ const mongoUri = `mongodb://${username}:${password}@0.0.0.0/${dbName}?authSource
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-function isConvertibleToNumber(value) {
-  const number = Number(value);
-  return !isNaN(number);
-}
-
 // Create a new MongoClient
 const client = new MongoClient(mongoUri);
 
@@ -34,6 +31,8 @@ async function connectToMongo() {
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
         const postsCollection = db.collection('posts');
+        const tasksCollection = db.collection('tasks');
+        const goalsCollection = db.collection('goals');
 
         // POST /text endpoint to accept text
         app.post('/text', async (req, res) => {
@@ -43,7 +42,33 @@ async function connectToMongo() {
                 return res.status(400).send({ message: 'Text is required' });
             }
             const date = new Date();
-            await postsCollection.insertOne({ text, date });
+
+            // base promise to insert new post
+            const promises = [postsCollection.insertOne({ text, date })];
+
+            // if new task, add to mongodb
+            const newTask = extractTaskDetails(text, date);
+            if (newTask) {
+              console.log("adding new task: ", newTask);
+              promises.push(
+                tasksCollection.insertOne(newTask)
+              );
+            }
+
+            const newGoal = extractGoalDetails(text, date);
+            if (newGoal) {
+              promises.push(
+                goalsCollection.insertOne(newGoal)
+              );
+            }
+
+            try {
+              await Promise.all(promises);
+            } catch (e) {
+              console.error("error while updating posts", e);
+              res.status(500).send({ message: "error while updating posts" });
+            }
+
             res.status(201).send({ message: 'text added successfully' });
         });
 
@@ -62,31 +87,17 @@ async function connectToMongo() {
         // GET /posts endpoint to return both image and text data
         app.get('/posts', async (req, res) => {
           console.log('GET /posts request');
-          const { offset, limit, search } = req.query;
-        
-          if (!isConvertibleToNumber(offset) || !isConvertibleToNumber(limit)) {
-            return res.status(400).send({ message: 'pagination must be numbers' });
-          }
-        
-          const query = {};
-          if (search) {
-            query.text = { $regex: search, $options: 'i' }; // Case-insensitive search
-          }
-        
-          try {
-            const posts = await postsCollection.find(query)
-              .sort({ date: -1 }) // Sort by date in descending order
-              // @ts-ignore
-              .skip(parseInt(offset))
-              // @ts-ignore
-              .limit(parseInt(limit))
-              .toArray();
-        
-            res.status(200).send({ posts });
-          } catch (err) {
-            console.error('Failed to fetch posts', err);
-            res.status(500).send({ message: 'Failed to fetch posts' });
-          }
+          return await handlMultiGet(req, res, postsCollection, 'posts')
+        });
+
+        app.get('/tasks', async (req, res) => {
+          console.log('GET /tasks request');
+          return await handlMultiGet(req, res, tasksCollection, 'tasks')
+        });
+
+        app.get('/goals', async (req, res) => {
+          console.log('GET /goals request');
+          return await handlMultiGet(req, res, goalsCollection, 'goals')
         });
 
     } catch (err) {
