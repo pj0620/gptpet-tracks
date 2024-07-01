@@ -3,10 +3,21 @@ import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
 import cors from 'cors';
 import { extractGoalDetails, extractTaskDetails, handlMultiGet } from './utils.js';
-
+import { Server } from "socket.io";
+import http from 'http';
 
 const app = express();
 const port = 4000;
+
+// websocket
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+      origin: '*', // Allow all origins
+      methods: ['GET', 'POST'],
+      credentials: true
+  }
+});
 
 app.use(cors())
 
@@ -53,6 +64,8 @@ async function connectToMongo() {
               promises.push(
                 tasksCollection.insertOne(newTask)
               );
+
+              io.emit('metrics', { task: newTask });
             }
 
             const newGoal = extractGoalDetails(text, date);
@@ -60,6 +73,8 @@ async function connectToMongo() {
               promises.push(
                 goalsCollection.insertOne(newGoal)
               );
+
+              io.emit('metrics', { goal: newGoal });
             }
 
             try {
@@ -80,6 +95,7 @@ async function connectToMongo() {
                 return res.status(400).send({ message: 'image is required' });
             }
             const date = new Date();
+            io.emit('metrics', { image });
             await postsCollection.insertOne({ image, date });
             res.status(201).send({ message: 'Image added successfully' });
         });
@@ -100,6 +116,15 @@ async function connectToMongo() {
           return await handlMultiGet(req, res, goalsCollection, 'goals')
         });
 
+
+        io.on('connection', (socket) => {
+          console.log('a user connected');
+
+          socket.on('disconnect', () => {
+              console.log('user disconnected');
+          });
+        });
+
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         process.exit(1);
@@ -110,6 +135,6 @@ connectToMongo();
 
 // The rest of your Express app goes here
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server running at http://0.0.0.0:${port}`);
 });

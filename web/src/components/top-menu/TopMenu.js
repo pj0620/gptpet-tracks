@@ -68,6 +68,18 @@ function TopMenu() {
             Logs
           </Typography>
         </Link>
+        <Link href="/pet-view" underline="none">
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ flexGrow: 1 }} 
+            style={{
+              marginLeft: '2rem', 
+              marginRight: '2rem'
+            }}>
+            Pet View
+          </Typography>
+        </Link>
       </Toolbar>
     </AppBar>
   );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
-const ImageView = ({ base64Image, title }) => {
+const ImageView = ({ base64Image, title, skipWrap = false }) => {
 
     // React doesn't require this component to update the state as per your description,
     // so I'm not adding any state-updating logic here.
@@ -20,13 +20,35 @@ const ImageView = ({ base64Image, title }) => {
             <Typography variant="h4" component="h2" sx={{ color: grey[50], mb: 2 }}>
                 {title}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+            {base64Image && (
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                 <img
-                    src={`data:image/jpeg;base64,${base64Image}`}
+                    src={
+                      skipWrap ? base64Image : `data:image/jpeg;base64,${base64Image}`
+                    }
                     alt="Camera View"
                     style={{ maxWidth: '100%', height: 'auto', borderRadius: '4px' }}
                 />
-            </Box>
+              </Box>
+            )}
+            {!base64Image && (
+              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, maxWidth: '35vw' }}>
+                <Typography 
+                  sx={{
+                    color: 'red', 
+                    width: '25vw', 
+                    height: '50vh', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'center', 
+                    background: '#000080',
+                    alignItems: 'center'
+                  }}
+                  variant="h4" component="h2">
+                  Disconnected
+                </Typography>
+              </Box>
+            )}
         </Box>
     );
 };
