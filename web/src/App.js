@@ -9,7 +9,7 @@ import Skills from 'pages/skills/Skills';
 import Objects from 'pages/objects/Objects';
 import ManualControls from 'pages/manual-control/ManualControls';
 import PetView from 'pages/pet-view/PetView';
-import Logs from 'pages/logs/Logs';
+import Logs from 'pages/pet-logs/Logs';
 
 function App() {
   const client = new QueryClient();
