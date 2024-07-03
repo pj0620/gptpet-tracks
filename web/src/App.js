@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from './pages/home/Home.js';
 import TopMenu from './components/top-menu/TopMenu';
