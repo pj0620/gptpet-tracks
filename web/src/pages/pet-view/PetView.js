@@ -22,16 +22,16 @@ function PetView() {
         setPetView(data.image);
       }
       if (data?.task) {
-        setTasks((prevTasks) => [...prevTasks, {
+        setTasks((prevTasks) => [{
           text: data?.task?.task,
           date: data?.task?.date
-        }]);
+        }, ...prevTasks]);
       }
       if (data?.goal) {
-        setGoals((prevTasks) => [...prevTasks, {
+        setGoals((prevGoals) => [{
           text: data?.goal?.description,
           date: data?.goal?.date
-        }]);
+        }, ...prevGoals]);
       }
     });
     return () => {socket.off('metrics')};
