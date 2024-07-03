@@ -1,4 +1,5 @@
 export function extractTaskDetails(message, date) {
+  console.log(`parsing message for a task`);
   // Define the regular expression to match the expected format
   const regex = /^new task: task=(.+), reasoning=(.+)$/;
   
@@ -9,9 +10,11 @@ export function extractTaskDetails(message, date) {
     // If it matches, extract the task and reasoning
     const task = match[1];
     const reasoning = match[2];
+    const newTask = { task, reasoning, date };
+    console.log(`found task:`, newTask);
     
     // Return the extracted details
-    return { task, reasoning, date };
+    return newTask;
   } else {
     // If it doesn't match, return null or an appropriate error message
     return null;
@@ -19,6 +22,7 @@ export function extractTaskDetails(message, date) {
 }
 
 export function extractGoalDetails(message, date) {
+  console.log(`parsing message for a task`);
   // Define the regular expression to match the expected format
   const regex = /^goal is now: Goal\(description='(.+)', completed=(True|False), goal_id='([a-f0-9-]+)'\)$/;
   
@@ -30,9 +34,11 @@ export function extractGoalDetails(message, date) {
     const description = match[1];
     const completed = match[2] === 'True';
     const goal_id = match[3];
+    const newGoal = { description, completed, goal_id, date };
+    console.log(`found goal:`, newGoal);
     
     // Return the extracted details
-    return { description, completed, goal_id, date };
+    return newGoal;
   } else {
     // If it doesn't match, return null or an appropriate error message
     return null;

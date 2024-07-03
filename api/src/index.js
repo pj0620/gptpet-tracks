@@ -49,6 +49,7 @@ async function connectToMongo() {
         app.post('/text', async (req, res) => {
             console.log('POST /text request')
             const { text } = req.body;
+            console.log('text: ', text);
             if (!text) {
                 return res.status(400).send({ message: 'Text is required' });
             }
