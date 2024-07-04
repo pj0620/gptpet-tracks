@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import ImageView from "components/image-view/DepthCameraView";
+import ImageView from "components/image-view/ImageView";
 import { PostsList } from "components/posts-list/PostsList";
 import React, { useEffect } from "react";
 import { useState } from "react";
