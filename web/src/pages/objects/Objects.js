@@ -30,7 +30,7 @@ function Skills() {
     return response.data.data["Get"]["Object"];
   }
 
-  const { data, status, refetch } = useQuery("fetch-objects", fetchSkills);
+  const { data, status } = useQuery("fetch-objects", fetchSkills);
 
   return (<>
     {status === "loading" && <CircularProgress />}

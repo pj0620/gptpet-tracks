@@ -1,14 +1,10 @@
-import { CircularProgress, Grid, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 import axios from "axios";
-import Object from "../../components/object/Object";
 import React, { useEffect, useState } from 'react';
-import { useQuery } from "react-query";
 import MovementButtons from "components/movement-buttons/MovementButtons";
 import SensorView from "components/sensor-view/SensorView";
 import ColorView from "components/color-view/ColorView";
-import CameraView from "components/camera-view/CameraView";
-import DepthCameraView from "components/depth-camera-view/DepthCameraView";
-import ImageView from "components/image-view/DepthCameraView";
+import ImageView from "components/image-view/ImageView";
 
 function ManualControls() {
   const [loadingView, setLoadingView] = useState(false);
@@ -79,7 +75,7 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url]);
+  }, [gptpet_url, loadingMeasurements]);
 
   useEffect(() => {
     if (loadingView) {
@@ -107,7 +103,7 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url]);
+  }, [gptpet_url, loadingView]);
 
   useEffect(() => {
     if (loadingDepthView) {
@@ -135,7 +131,7 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url]);
+  }, [gptpet_url, loadingDepthView]);
 
   useEffect(() => {
     if (loadingLabeledView) {
@@ -163,7 +159,7 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url]);
+  }, [gptpet_url, loadingLabeledView]);
 
   const setColor = async (color) => {
     try {

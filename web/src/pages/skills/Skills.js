@@ -1,7 +1,5 @@
-import { Merge } from "@mui/icons-material";
-import { AppBar, Button, CircularProgress, Grid, IconButton, MenuItem, Select, Toolbar, Typography } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
-import Post from "components/post/Post";
 import Skill from "components/skill/Skill";
 import React from 'react';
 import { useQuery } from "react-query";
@@ -32,7 +30,7 @@ function Skills() {
     return response.data.data["Get"]["Skill"];
   }
 
-  const { data, status, refetch } = useQuery("fetch-skills", fetchSkills);
+  const { data, status } = useQuery("fetch-skills", fetchSkills);
 
   return (<>
     {status === "loading" && <CircularProgress />}

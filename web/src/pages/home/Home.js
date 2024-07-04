@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable jsx-a11y/no-distracting-elements */
 import React from 'react';
-import { Typography, Box, Container, Button } from '@mui/material';
+import { Typography, Box, Container } from '@mui/material';
 import image from './home_image.jpeg'
 import './home.css'
 
