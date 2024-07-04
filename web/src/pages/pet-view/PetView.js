@@ -45,7 +45,9 @@ function PetView() {
           <Typography variant="h4" component="h2" sx={{ color: grey[50], mb: 2, justifyContent: 'center', display: 'flex' }}>Tasks</Typography>
           <PostsList posts={tasks}/>
         </div>
-        <ImageView base64Image={petView} title={'Pet Camera'} skipWrap/>
+        <div style={{minWidth: '50vw'}}>
+          <ImageView base64Image={petView} title={'Pet Camera'} skipWrap/>
+        </div>
         <div style={{ width: "100%" }}>
           <Typography variant="h4" component="h2" sx={{ color: grey[50], mb: 2, justifyContent: 'center', display: 'flex' }}>Goals</Typography>
           <PostsList posts={goals}/>
