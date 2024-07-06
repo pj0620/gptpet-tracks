@@ -84,6 +84,7 @@ function ManualControls() {
     }
     setLoadingView(true);
 
+    console.log('calling interval for get-current-view')
     const intervalId = setInterval(() => {
       console.log('getting current view')
       fetch(`${gptpet_url}/current-view`)
