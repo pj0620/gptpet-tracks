@@ -71,7 +71,7 @@ function ManualControls() {
           setLoadingMeasurements(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
-    }, 1000); // Poll every 1000 milliseconds (1 second)
+    }, 2000); // Poll every 1000 milliseconds (1 second)
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
@@ -99,7 +99,7 @@ function ManualControls() {
           setLoadingView(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
-    }, 1000); // Poll every 1000 milliseconds (1 second)
+    }, 2000); // Poll every 1000 milliseconds (1 second)
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
@@ -127,7 +127,7 @@ function ManualControls() {
           setLoadingDepthView(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
-    }, 1000); // Poll every 1000 milliseconds (1 second)
+    }, 2000); // Poll every 1000 milliseconds (1 second)
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
@@ -155,7 +155,7 @@ function ManualControls() {
           setLoadingLabeledView(false);
           console.error('There has been a problem with your fetch operation:', error);
         });
-    }, 1000); // Poll every 1000 milliseconds (1 second)
+    }, 2000); // Poll every 1000 milliseconds (1 second)
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
