@@ -78,6 +78,7 @@ function ManualControls() {
   }, [gptpet_url, loadingMeasurements]);
 
   useEffect(() => {
+    console.log('loadingView is true, exiting')
     if (loadingView) {
       return
     }
