@@ -75,7 +75,9 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url, loadingMeasurements]);
+  // if loading variable is included, breaks logic with intervalid
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gptpet_url]);
 
   useEffect(() => {
     console.log('loadingView is true, exiting')
@@ -106,7 +108,9 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url, loadingView]);
+  // if loading variable is included, breaks logic with intervalid
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gptpet_url]);
 
   useEffect(() => {
     if (loadingDepthView) {
@@ -134,7 +138,9 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url, loadingDepthView]);
+  // if loading variable is included, breaks logic with intervalid
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gptpet_url]);
 
   useEffect(() => {
     if (loadingLabeledView) {
@@ -162,7 +168,9 @@ function ManualControls() {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [gptpet_url, loadingLabeledView]);
+  // if loading variable is included, breaks logic with intervalid
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gptpet_url]);
 
   const setColor = async (color) => {
     try {
