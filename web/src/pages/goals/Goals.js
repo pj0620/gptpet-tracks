@@ -27,9 +27,7 @@ function Goals() {
       }
     })
 
-    console.log('response.data: ', response.data)
-    console.log('response.data.data["Get"]["Goals"]: ', response.data.data["Get"]["Goals"])
-    return response.data.data["Get"]["Goals"];
+    return response.data.data["Get"]["Goal"];
   }
 
   const { data, status } = useQuery("fetch-goals", fetchGoals);
