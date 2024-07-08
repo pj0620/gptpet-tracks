@@ -48,7 +48,7 @@ function Goals() {
         </Grid>)}
       </Grid>
     </>}
-    {(status === "success" && !data?.length) && <Typography>No Skills found</Typography>}
+    {(status === "success" && !data?.length) && <Typography>No Goals found</Typography>}
   </>);
 }
 

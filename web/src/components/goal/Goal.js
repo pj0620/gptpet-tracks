@@ -15,7 +15,7 @@ function Goal(props) {
             Goal: {goal.goal_text}
           </Typography>
           <Typography variant="body1" paragraph>
-            Completed: {goal.completed}
+            Completed: {goal.completed ? 'true' : 'false'}
           </Typography>
         </CardContent>
       </Card>
