@@ -10,6 +10,7 @@ import Objects from 'pages/objects/Objects';
 import ManualControls from 'pages/manual-control/ManualControls';
 import PetView from 'pages/pet-view/PetView';
 import Logs from 'pages/pet-logs/Logs';
+import Goals from 'pages/goals/Goals';
 
 function App() {
   const client = new QueryClient();
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/">
                   <Route index element={<Home />} />
                   <Route path="logs" element={<Logs />} />
+                  <Route path="goals" element={<Goals />} />
                   <Route path="skills" element={<Skills />} />
                   <Route path="objects" element={<Objects />} />
                   <Route path="manual-control" element={<ManualControls />} />
