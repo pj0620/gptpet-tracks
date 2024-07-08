@@ -32,6 +32,18 @@ function TopMenu() {
             Manual Control
           </Typography>
         </Link>
+        <Link href="/goals" underline="none">
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ flexGrow: 1 }} 
+            style={{
+              marginLeft: '2rem', 
+              marginRight: '2rem'
+            }}>
+            Goals
+          </Typography>
+        </Link>
         <Link href="/objects" underline="none">
           <Typography 
             variant="h6" 
